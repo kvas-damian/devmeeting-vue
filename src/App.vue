@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <h2 @click="sortDirection *= -1">My awesome list</h2>
+    <input v-model="search" @input="onSearchChange()" placeholder="Search">
     <SortedProductList :products="sharedState.products" :sortDirection="sortDirection" />
     <AddProduct />
 
@@ -43,6 +44,7 @@ export default {
       cart: [],
       cartProductName: '',
       sortDirection: 1,
+      search: ''
     };
   },
   created() {
@@ -63,6 +65,9 @@ export default {
 
         this.$validator.reset();
       });
+    },
+    onSearchChange() {
+      store.fetchProducts(this.search)
     },
   },
 };

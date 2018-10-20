@@ -4,8 +4,8 @@ const store = {
   state: {
     products: [],
   },
-  async fetchProducts() {
-    ({ data: this.state.products } = await axios.get('http://localhost:3000/products'));
+  async fetchProducts(query = '') {
+    ({ data: this.state.products } = await axios.get(`http://localhost:3000/products?q=${encodeURIComponent(query)}`));
   },
   addProduct(product) {
     this.state.products.push(product);

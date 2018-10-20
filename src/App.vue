@@ -1,5 +1,5 @@
 <template>
-  <div id="App">
+  <div id="app">
     <h2>My awesome list</h2>
     <ul>
       <li
@@ -8,6 +8,7 @@
       >
         {{ p.name }}
         <button @click="remove(p.id)">Remove</button>
+        <button @click="addToCart(p)">Add to cart</button>
       </li>
     </ul>
     <p v-if="!products.length">No products!</p>
@@ -23,11 +24,40 @@
         {{ errors.first('productName') }}
       </div>
     </form>
+
+    <h2>Cart</h2>
+    <ul>
+      <li
+        v-for="p in cart"
+        :key="p.id"
+      >
+        {{ p.name }}
+      </li>
+    </ul>
+    <p v-if="!cart.length">Your cart is empty!</p>
+
+    <form @submit.prevent="onCartSubmit()">
+      <input
+        v-model="cartProductName"
+        v-validate="{ required: true, in: products.map(p => p.name) }"
+        name="cartProductName"
+        placeholder="Product name"
+      >
+      <button>Add item to cart</button>
+      <div v-show="errors.has('cartProductName')">
+        {{ errors.first('cartProductName') }}
+      </div>
+    </form>
   </div>
 </template>
 
 <script>
 import uuid from 'uuid/v4';
+import { Validator } from 'vee-validate';
+
+Validator.extend('in', (value, array=[]) => {
+  return array.includes(value);
+});
 
 export default {
   name: 'App',
@@ -40,12 +70,14 @@ export default {
         id: 1,
         name: 'Pizza',
       }],
+      cart: [],
       productName: '',
+      cartProductName: '',
     };
   },
   methods: {
     onSubmit() {
-      this.$validator.validateAll().then(result => {
+      this.$validator.validate('productName').then(result => {
         if (!result) {
           return;
         }
@@ -55,6 +87,21 @@ export default {
           name: this.productName,
         });
         this.productName = '';
+
+        this.$validator.reset();
+      });
+    },
+    onCartSubmit() {
+      this.$validator.validate('cartProductName').then(result => {
+        if (!result) {
+          return;
+        }
+
+        this.cart.push({
+          id: uuid(),
+          name: this.cartProductName,
+        });
+        this.cartProductName = '';
 
         this.$validator.reset();
       });

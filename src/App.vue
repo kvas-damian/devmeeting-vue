@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <h2>My awesome list</h2>
-    <ProductList :products="products" />
+    <h2 @click="sortDirection *= -1">My awesome list</h2>
+    <SortedProductList :products="products" :sortDirection="sortDirection" />
     <form @submit.prevent="onSubmit()">
       <input
         v-model="productName"
@@ -37,6 +37,7 @@
 import uuid from 'uuid/v4';
 import { Validator } from 'vee-validate';
 import ProductList from './components/ProductList';
+import SortedProductList from './components/SortedProductList';
 
 Validator.extend('in', (value, array=[]) => {
   return array.includes(value);
@@ -44,7 +45,7 @@ Validator.extend('in', (value, array=[]) => {
 
 export default {
   name: 'App',
-  components: { ProductList },
+  components: { ProductList, SortedProductList },
   data() {
     return {
       products: [{
@@ -57,6 +58,7 @@ export default {
       cart: [],
       productName: '',
       cartProductName: '',
+      sortDirection: 1,
     };
   },
   methods: {

@@ -2,7 +2,7 @@
   <div id="app">
     <h2 @click="sortDirection *= -1">My awesome list</h2>
     <input v-model="search" @input="onSearchChange()" placeholder="Search">
-    <SortedProductList :products="sharedState.products" :sortDirection="sortDirection" />
+    <SortedProductList :products="products" :sortDirection="sortDirection" />
     <AddProduct />
 
     <h2>Cart</h2>
@@ -11,7 +11,7 @@
     <form @submit.prevent="onCartSubmit()">
       <input
         v-model="cartProductName"
-        v-validate="{ required: true, in: sharedState.products.map(p => p.name) }"
+        v-validate="{ required: true, in: products.map(p => p.name) }"
         name="cartProductName"
         placeholder="Product name"
       >
@@ -40,7 +40,6 @@ export default {
   components: { AddProduct, ProductList, SortedProductList },
   data() {
     return {
-      sharedState: store.state,
       cart: [],
       cartProductName: '',
       sortDirection: 1,
@@ -48,7 +47,12 @@ export default {
     };
   },
   created() {
-    store.fetchProducts();
+    this.$store.dispatch('fetchProducts');
+  },
+  computed: {
+    products() {
+      return this.$store.state.products;
+    }
   },
   methods: {
     onCartSubmit() {
@@ -67,7 +71,7 @@ export default {
       });
     },
     onSearchChange() {
-      store.fetchProducts(this.search)
+      this.$store.dispatch('fetchProducts', this.search);
     },
   },
 };

@@ -15,7 +15,6 @@
 
 <script>
   import uuid from 'uuid/v4';
-  import store from '../store';
   export default {
     name: 'AddProduct',
     data() {
@@ -30,7 +29,7 @@
             return;
           }
 
-          store.addProduct({
+          this.$store.dispatch('addProduct', {
             id: uuid(),
             name: this.productName,
           });

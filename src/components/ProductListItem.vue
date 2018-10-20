@@ -5,8 +5,6 @@
 </template>
 
 <script>
-  import store from '../store';
-
   export default {
     name: 'ProductListItem',
     props: {
@@ -21,7 +19,7 @@
     },
     methods: {
       save() {
-        store.updateProduct(this.product.id, this.name);
+        this.$store.dispatch('updateProduct', { id: this.product.id, name: this.name });
       }
     }
   };

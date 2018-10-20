@@ -11,13 +11,14 @@
       </li>
     </ul>
     <p v-if="!products.length">No products!</p>
-    <button @click="removeLast()">Remove last item</button>
-    <input
-      v-model="productName"
-      name="productName"
-      placeholder="Product name"
-    >
-    <button @click="add()">Add item</button>
+    <form @submit.prevent="onSubmit()">
+      <input
+        v-model="productName"
+        name="productName"
+        placeholder="Product name"
+      >
+      <button>Add item</button>
+    </form>
   </div>
 </template>
 
@@ -37,10 +38,7 @@ export default {
     };
   },
   methods: {
-    removeLast() {
-      this.products.pop();
-    },
-    add() {
+    onSubmit() {
       this.products.push({
         id: Math.round(Math.random() * 10000),
         name: this.productName,

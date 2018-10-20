@@ -1,17 +1,7 @@
 <template>
   <div id="app">
     <h2>My awesome list</h2>
-    <ul>
-      <li
-        v-for="p in products"
-        :key="p.id"
-      >
-        {{ p.name }}
-        <button @click="remove(p.id)">Remove</button>
-        <button @click="addToCart(p)">Add to cart</button>
-      </li>
-    </ul>
-    <p v-if="!products.length">No products!</p>
+    <ProductList :products="products" />
     <form @submit.prevent="onSubmit()">
       <input
         v-model="productName"
@@ -26,15 +16,7 @@
     </form>
 
     <h2>Cart</h2>
-    <ul>
-      <li
-        v-for="p in cart"
-        :key="p.id"
-      >
-        {{ p.name }}
-      </li>
-    </ul>
-    <p v-if="!cart.length">Your cart is empty!</p>
+    <ProductList :products="cart" />
 
     <form @submit.prevent="onCartSubmit()">
       <input
@@ -54,6 +36,7 @@
 <script>
 import uuid from 'uuid/v4';
 import { Validator } from 'vee-validate';
+import ProductList from './components/ProductList';
 
 Validator.extend('in', (value, array=[]) => {
   return array.includes(value);
@@ -61,6 +44,7 @@ Validator.extend('in', (value, array=[]) => {
 
 export default {
   name: 'App',
+  components: { ProductList },
   data() {
     return {
       products: [{
@@ -105,10 +89,6 @@ export default {
 
         this.$validator.reset();
       });
-    },
-    remove(productId) {
-      const productIndex = this.products.findIndex(product => productId === product.id);
-      this.products.splice(productIndex, 1);
     },
   },
 };

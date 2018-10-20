@@ -1,0 +1,40 @@
+{
+  "products": [
+    {
+      "id": 0,
+      "name": "Coffee"
+    },
+    {
+      "id": 1,
+      "name": "Pizza"
+    },
+    {
+      "id": 2,
+      "name": "Coke"
+    },
+    {
+      "id": "7e1027e9-b092-46c6-80ea-dd4af7a81e87",
+      "name": "asd"
+    },
+    {
+      "id": "c50405ab-cd1d-401d-8ab8-1859582ff2ff",
+      "name": "asd"
+    },
+    {
+      "id": "cea5e225-3617-43ab-8887-f478f8826a77",
+      "name": "zxcz"
+    },
+    {
+      "id": "6bb8b6c5-e93b-4ef2-97aa-ff45570b8292",
+      "name": "sad"
+    },
+    {
+      "id": "12cf27d1-5e46-43f0-aa8a-1ccc3572bf47",
+      "name": "asdd"
+    },
+    {
+      "id": "132534a6-abd7-4bb1-acdf-a58dee5ec320",
+      "name": "zzz"
+    }
+  ]
+}

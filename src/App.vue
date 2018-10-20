@@ -14,15 +14,21 @@
     <form @submit.prevent="onSubmit()">
       <input
         v-model="productName"
+        v-validate="'required|min:3'"
         name="productName"
         placeholder="Product name"
       >
       <button>Add item</button>
+      <div v-show="errors.has('productName')">
+        {{ errors.first('productName') }}
+      </div>
     </form>
   </div>
 </template>
 
 <script>
+import uuid from 'uuid/v4';
+
 export default {
   name: 'App',
   data() {
@@ -39,11 +45,19 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.products.push({
-        id: Math.round(Math.random() * 10000),
-        name: this.productName,
+      this.$validator.validateAll().then(result => {
+        if (!result) {
+          return;
+        }
+
+        this.products.push({
+          id: uuid(),
+          name: this.productName,
+        });
+        this.productName = '';
+
+        this.$validator.reset();
       });
-      this.productName = '';
     },
     remove(productId) {
       const productIndex = this.products.findIndex(product => productId === product.id);
